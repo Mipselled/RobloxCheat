@@ -20,18 +20,25 @@ local flightSpeed = 50 -- change default flight speed here
 local espActive = true
 local espList = {}
 
-local blockedNames = {
-    ["Youtube_Ebi"] = true,
-    ["CBYBKB"] = true,
-    ["123IDiddleKids"] = true,
-    ["Skystrikerxy"] = true,
-    ["hurtbringer25"] = true,
-    ["HACKERMAN123_XD"] = true,
-    ["HACKERMAN1234_XD"] = true,
-    ["Masteryao2"] = true,
-	["NebulaWhisk023"] = true,
-	["EchoFable019"] = true
-}
+local blockedNames = {}
+
+local function fetchBlockedNames()
+    local url = "https://raw.githubusercontent.com/Mipselled/RobloxCheat/refs/heads/main/blockednames.txt" -- replace with your raw URL
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+
+    if success and response then
+        for name in response:gmatch("[^\r\n]+") do
+            blockedNames[name] = true
+        end
+    else
+        warn("Failed to fetch blocked names from GitHub")
+    end
+end
+
+-- call it once at the start
+fetchBlockedNames()
 
 -- add this helper once near the top
 local function inViewport(v3)
