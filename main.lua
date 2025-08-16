@@ -193,7 +193,7 @@ end)
 
 --// ESP functions
 local function createESP(player)
-    if player == LocalPlayer or blockedNames[player.Name] or not scriptRunning then
+    if player == LocalPlayer or blockedNames[player.Name] or not scriptRunning or string.match(player.Name, "^[A-Za-z]+_[A-Za-z]+_%d%d%d$") then
         return
     end
 
