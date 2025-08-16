@@ -26,8 +26,8 @@ local blockedNames = {
     ["123IDiddleKids"] = true,
     ["Skystrikerxy"] = true,
     ["hurtbringer25"] = true,
-    ["Hackerman123_XD"] = true,
-    ["Hackerman1234_XD"] = true,
+    ["HACKERMAN123_XD"] = true,
+    ["HACKERMAN1234_XD"] = true,
     ["Masteryao2"] = true
 }
 
