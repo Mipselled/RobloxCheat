@@ -52,7 +52,7 @@ local function teleportToClosestPlayer()
             if targetHRP and humanoid and humanoid.Health > 0 then
                 local value
                 if sortMode == "hp" then
-                    value = humanoid.Health -- lower health = higher priority
+                    value = player.Character.Health -- lower health = higher priority
                 else
                     value = (hrp.Position - targetHRP.Position).Magnitude -- distance
                 end
@@ -256,7 +256,7 @@ local function createESP(player)
                 espBox.PointC = Vector2.new(headPos.X + 15, headPos.Y)
                 espBox.PointD = Vector2.new(headPos.X - 15, headPos.Y)
 
-                healthText.Text = "Health: " .. math.floor(humanoid.Health)
+                healthText.Text = "Health: " .. math.ceil(humanoid.Health)
                 healthText.Position = Vector2.new(headPos.X, headPos.Y - 15)
                 healthText.Visible = true
             else
