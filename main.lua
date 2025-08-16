@@ -28,7 +28,9 @@ local blockedNames = {
     ["hurtbringer25"] = true,
     ["HACKERMAN123_XD"] = true,
     ["HACKERMAN1234_XD"] = true,
-    ["Masteryao2"] = true
+    ["Masteryao2"] = true,
+	["NebulaWhisk023"] = true,
+	["EchoFable019"] = true
 }
 
 -- add this helper once near the top
