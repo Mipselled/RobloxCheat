@@ -1,3 +1,5 @@
+local scriptRunning = true -- DO NOT TOUCH
+
 --// Services
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -117,7 +119,7 @@ end
 
 --// Toggle flight with F
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
+    if gameProcessed or not scriptRunning then return end
     if input.KeyCode == Enum.KeyCode.F then
         if flightActive then
             disableFlight()
@@ -126,12 +128,17 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
         end
     elseif input.KeyCode == Enum.KeyCode.T then
         teleportToClosestPlayer()
-    end
+    elseif input.KeyCode == Enum.KeyCode.U then
+		disableFlight()
+		flightActive = false
+		espActive = false
+		scriptRunning = false
+	end
 end)
 
 --// Flight movement update
 RunService.Heartbeat:Connect(function()
-    if not flightActive then return end
+    if not flightActive or not scriptRunning then return end
     local moveDirection = Vector3.new(0, 0, 0)
 
     if UserInputService:IsKeyDown(Enum.KeyCode.W) then
@@ -175,7 +182,7 @@ end)
 
 --// ESP functions
 local function createESP(player)
-    if player == LocalPlayer or blockedNames[player.Name] then
+    if player == LocalPlayer or blockedNames[player.Name] or not scriptRunning then
         return
     end
 
@@ -197,7 +204,7 @@ local function createESP(player)
 
     RunService.RenderStepped:Connect(
         function()
-            if not espActive then
+            if not espActive or not scriptRunning then
                 healthText.Visible = false
                 espBox.PointA = Vector2.new(0, 0)
                 espBox.PointB = Vector2.new(0, 0)
