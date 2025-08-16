@@ -15,6 +15,16 @@ local flightSpeed = 50 -- change default flight speed here
 local espActive = true
 local espList = {}
 
+local blockedNames = {
+    ["Youtube_Ebi"] = true,
+    ["CBYBKB"] = true,
+    ["123IDiddleKids"] = true,
+    ["Skystrikerxy"] = true,
+    ["Hurtbringer25"] = true,
+    ["Hackerman123_XD"] = true,
+    ["Masteryao2"] = true
+}
+
 -- add this helper once near the top
 local function inViewport(v3)
     local s = Camera.ViewportSize
@@ -121,10 +131,11 @@ end)
 
 --// ESP functions
 local function createESP(player)
-    if player == LocalPlayer then
+    if player == LocalPlayer or blockedNames[player.Name] then
         return
     end
 
+	local visible = true;
     local espBox = Drawing.new("Quad")
     espBox.Thickness = 2
     espBox.Color = Color3.fromRGB(0, 255, 0) -- Green ESP
@@ -143,21 +154,30 @@ local function createESP(player)
     RunService.RenderStepped:Connect(
         function()
             if not espActive then
-                espBox.Visible = false
                 healthText.Visible = false
+                espBox.PointA = Vector2.new(0, 0)
+                espBox.PointB = Vector2.new(0, 0)
+                espBox.PointC = Vector2.new(0, 0)
+                espBox.PointD = Vector2.new(0, 0)
                 return
             end
 			
 			if not espList[player.Name] then
-                espBox.Visible = false
                 healthText.Visible = false
+                espBox.PointA = Vector2.new(0, 0)
+                espBox.PointB = Vector2.new(0, 0)
+                espBox.PointC = Vector2.new(0, 0)
+                espBox.PointD = Vector2.new(0, 0)
                 return
             end
 
             local char = player.Character
             if not char then
-                espBox.Visible = false
                 healthText.Visible = false
+                espBox.PointA = Vector2.new(0, 0)
+                espBox.PointB = Vector2.new(0, 0)
+                espBox.PointC = Vector2.new(0, 0)
+                espBox.PointD = Vector2.new(0, 0)
                 return
             end
 
@@ -165,8 +185,11 @@ local function createESP(player)
             local head = char:FindFirstChild("Head")
             local humanoid = char:FindFirstChildOfClass("Humanoid")
             if not (root and head and humanoid) then
-                espBox.Visible = false
                 healthText.Visible = false
+                espBox.PointA = Vector2.new(0, 0)
+                espBox.PointB = Vector2.new(0, 0)
+                espBox.PointC = Vector2.new(0, 0)
+                espBox.PointD = Vector2.new(0, 0)
                 return
             end
 
@@ -189,10 +212,6 @@ local function createESP(player)
                 espBox.PointB = Vector2.new(0, 0)
                 espBox.PointC = Vector2.new(0, 0)
                 espBox.PointD = Vector2.new(0, 0)
-			end
-
-			if espBox.Visible then
-                
 			end
         end
     )
