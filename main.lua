@@ -134,6 +134,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		flightActive = false
 		espActive = false
 		scriptRunning = false
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Mipselled/RobloxCheat/refs/heads/main/main.lua"))()
 	end
 end)
 
