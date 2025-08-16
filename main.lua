@@ -6,6 +6,9 @@ local Workspace = game:GetService("Workspace")
 local Camera = Workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
 
+--// TP Settings
+local sortMode = "distance" -- "distance" or "hp"
+
 --// Flight variables
 local flightActive = false
 local flyBodyVelocity, flyBodyGyro = nil, nil
@@ -36,27 +39,36 @@ local function teleportToClosestPlayer()
     local hrp = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     if not hrp then return end
 
-    local closestChar, closestHRP, closestDist = nil, nil, math.huge
+    local bestChar, bestHRP
+    local bestValue = math.huge
+
     for _, player in pairs(Players:GetPlayers()) do
         if player ~= LocalPlayer and not blockedNames[player.Name] and player.Character then
             local targetHRP = player.Character:FindFirstChild("HumanoidRootPart")
-            if targetHRP then
-                local dist = (hrp.Position - targetHRP.Position).Magnitude
-                if dist < closestDist then
-                    closestDist = dist
-                    closestChar = player.Character
-                    closestHRP = targetHRP
+            local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+            if targetHRP and humanoid and humanoid.Health > 0 then
+                local value
+                if sortMode == "hp" then
+                    value = humanoid.Health -- lower health = higher priority
+                else
+                    value = (hrp.Position - targetHRP.Position).Magnitude -- distance
+                end
+
+                if value < bestValue then
+                    bestValue = value
+                    bestChar = player.Character
+                    bestHRP = targetHRP
                 end
             end
         end
     end
 
-    if closestChar and closestHRP then
-        local head = closestChar:FindFirstChild("Head")
+    if bestChar and bestHRP then
+        local head = bestChar:FindFirstChild("Head")
         if head then
             local lookVec = head.CFrame.LookVector
             -- Use HRP for position but Head for facing direction
-            hrp.CFrame = CFrame.new(closestHRP.Position - lookVec * 5, closestHRP.Position + lookVec * 5)
+            hrp.CFrame = CFrame.new(bestHRP.Position - lookVec * 5, bestHRP.Position + lookVec * 5)
         end
     end
 end
